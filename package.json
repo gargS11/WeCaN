@@ -1,5 +1,5 @@
 {
-  "name": "WeCaN",
+  "name": "wecan",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -9,8 +9,12 @@
   "author": "Sparsh",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.1",
     "mongoose": "^5.4.1"
   }
 }

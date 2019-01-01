@@ -6,7 +6,7 @@ const app = express();
 const expressValidator = require('express-validator');
 const bcrypt = require('bcryptjs');    //to hash passwords
 const session = require('express-session');
-//const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
 var User = require('./models/user');
 
@@ -33,17 +33,63 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 // add validation methods to request
 app.use(expressValidator());
+// cookie parser middleware
+app.use(cookieParser());
+//express session middleware
+app.use(session({
+    secret: "wecan", resave: false,
+    saveUninitialized: true
+}));
 
 //login form
 app.get('/login', function (req, res) {
-    res.render('login');
+    res.render('login', { message: "" });
 });
 
 //login process
 app.post('/login', function (req, res) {
-    res.render('admin/register');
+    let query = { email: req.body.email };
+    User.findOne(query, function (err, user) {
+        if (err)
+            throw err;
+        if (!user) {
+            res.render('login', { message: "Invalid User!" });
+        } else {
+            bcrypt.compare(req.body.password, user.password, function (err, isMatch) {
+                if (err) throw err;
+                if (isMatch) {
+                    req.session.user = user;
+                    res.redirect('/admin/register');
+                } else {
+                    res.render('login', { message: "Invalid Password!" });
+                }
+            });
+        }
+    });
 });
 
+//logging out
+app.get('/logout', function (req, res) {
+    req.session.destroy(function () {
+        console.log("user logged out.")
+    });
+    res.redirect('/login');
+});
+
+function checkSignIn(req, res, next) {
+    /*if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');*/
+    if (req.session.user) {
+        next();     //If session exists, proceed to page
+    } else {
+        var err = new Error("Not logged in!");
+        console.log(req.session.user);
+        next(err);  //Error, trying to access unauthorized page!
+    }
+}
 //register form
 app.get('/admin/register', function (req, res) {
     res.render('admin/register');
@@ -74,7 +120,7 @@ app.post('/admin/register', function (req, res) {
         isDeleted: false,
         created_at: new Date()
     });
-
+    //hashing password
     bcrypt.genSalt(10, function (err, salt) { //here 10 represents saltRounds
         bcrypt.hash(newUser.password, salt, function (err, hash) {
             if (err) {

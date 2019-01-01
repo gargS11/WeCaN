@@ -1,0 +1,28 @@
+<div class="topnav" id="myTopnav">
+    <a href="#home" style="font-size:20px;">
+        <b>
+            W<span style="font-family:Book Antiqua;">e</span><span>C</span><span style="font-family:Book Antiqua;">aN</span>
+        </b>
+    </a>
+    <a class="navbar-right" href="/logout" style="color:white">
+        <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+    <a class="navbar-right" style="color:white" class="navbar-brand">userName</a>
+    <a class="navbar-right" href="" title="My Account">
+        <img src="images/profile.jpg" style="height:23px;width:23px;border-radius:50%;margin-right:10px" alt="Avatar">
+    </a>
+    <a class="navbar-right" style="color:white" class="navbar-brand">userType</a>
+    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+            x.className += " responsive";
+        } else {
+            x.className = "topnav";
+        }
+    }
+</script>

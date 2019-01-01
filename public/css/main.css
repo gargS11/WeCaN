@@ -1,0 +1,90 @@
+/* header css begin */
+.topnav {
+    overflow: hidden;
+    background-color: rgb(255, 94, 0);
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    text-decoration: none;
+    color: #f2f2f2;
+    font-size: 18px;
+}
+
+.topnav .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .topnav a:not(:first-child) {
+        display: none;
+    }
+    .topnav a.icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .topnav.responsive {
+        position: relative;
+    }
+    .topnav.responsive .icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none;
+        display: block;
+    }
+}
+/* header css ends */
+
+/* sidebar css begin*/
+#mySidenav a {
+    position: absolute;
+    left: -120px;
+    transition: 0.3s;
+    padding: 8px;
+    width: 180px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    text-align: left;
+}
+
+#mySidenav a:hover {
+    left: 0;
+}
+
+#about {
+    top: 80px;
+    background-color: #555;
+}
+
+#blog {
+    top: 140px;
+    background-color: #555;
+}
+
+#projects {
+    top: 200px;
+    background-color: #555;
+}
+
+#contact {
+    top: 260px;
+    background-color: #555
+}
+/*sidebar css ends*/
