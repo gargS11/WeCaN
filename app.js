@@ -141,6 +141,17 @@ app.post('/admin/register', function (req, res) {
         });
     });
 });
-
+//get profile form
+app.get('/getprofile', function (req, res) {
+    res.render('getprofile');
+});
+//get profile process
+app.post('/getprofile', function (req, res) {
+    res.render('admin/register');
+});
+//temp
+app.get('/profile', function (req, res) {
+    res.render('profile');
+});
 app.listen(8000);
 console.log('8000 is the magic port');

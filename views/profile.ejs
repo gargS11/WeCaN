@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Profile</title>
+    <!--including head that includes links to linking files-->
+    <% include ./head %>
+
+        <style>
+            .container {
+                margin-left: 130px;
+                margin-top: 50px;
+            }
+
+            .profiletable {
+                width: 85%;
+            }
+
+            .profiletable th,
+            td {
+                text-align: left;
+                padding: 16px;
+                letter-spacing: 1px;
+            }
+
+            .profiletable td {
+                font-family: Georgia;
+            }
+
+            .profiletable tr:nth-child(even) {
+                background-color: #f2f2f2
+            }
+        </style>
+</head>
+
+<body>
+
+    <!--including header-->
+    <% include ./header %>
+
+        <div id="mySidenav" class="sidenav">
+            <a href="#" id="about">Home</a>
+            <a href="#" id="blog">Add Users</a>
+            <a href="#" id="projects">Users list</a>
+            <a href="#" id="contact">Communities list</a>
+            <a href="#" id="contact">Change Password</a>
+        </div>
+
+        <div class="container bootstrap snippet">
+            <div class="row">
+                <div class="col-sm-3">
+                    <!--left col-->
+                    <div class="text-center">
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <h1>User Name</h1>
+                    </div>
+                    </hr>
+                    <br>
+                </div>
+                <!--/col-3-->
+
+                <div class="col-sm-9">
+                    <hr>
+                    <table class="profiletable">
+                        <tr>
+                            <td>Email </td>
+                            <td>Steven@gmail.com </td>
+                        </tr>
+                        <tr>
+                            <td>Name </td>
+                            <td>Joe Root </td>
+                        </tr>
+                        <tr>
+                            <td>D.O.B </td>
+                            <td>11-11-11 </td>
+                        </tr>
+                        <tr>
+                            <td>Mobile </td>
+                            <td>9319009809 </td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>Male </td>
+                        </tr>
+                        <tr>
+                            <td>City</td>
+                            <td>I am a student of a btech</td>
+                        </tr>
+                        <tr>
+                            <td>Hobbies</td>
+                            <td>Reading</td>
+                        </tr>
+                        <tr>
+                            <td>Bio</td>
+                            <td>I am a student of a btech</td>
+                        </tr>
+
+                    </table>
+                    <hr>
+                </div>
+                <!--/col-9-->
+            </div>
+            <!--/row-->
+        </div>
+
+</body>
+
+</html>
