@@ -4,13 +4,13 @@
             W<span style="font-family:Book Antiqua;">e</span><span>C</span><span style="font-family:Book Antiqua;">aN</span>
         </b>
     </a>
-    <a class="navbar-right" href="/logout" style="color:white">
+    <a class="navbar-right" href="/logout" style="color:white;margin-right: 15px;">
         <span class="glyphicon glyphicon-log-out"></span> Logout</a>
-    <a class="navbar-right" style="color:white" class="navbar-brand">userName</a>
+    <a class="navbar-right" style="color:white" class="navbar-brand"><%= user.username %></a>
     <a class="navbar-right" href="" title="My Account">
         <img src="images/profile.jpg" style="height:23px;width:23px;border-radius:50%;margin-right:10px" alt="Avatar">
     </a>
-    <a class="navbar-right" style="color:white" class="navbar-brand">userType</a>
+    <a class="navbar-right" style="color:white" class="navbar-brand"><%= user.role %></a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">
         <i class="fa fa-bars"></i>
     </a>

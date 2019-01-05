@@ -1,14 +1,15 @@
 //see for req.flash()
 
 const express = require('express');
+//Init app
 const app = express();
 
 const expressValidator = require('express-validator');
 const bcrypt = require('bcryptjs');    //to hash passwords
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-
-var User = require('./models/user');
+const path = require('path');
+const multer = require('multer');  //to store images
 
 const config = require('./config/database');
 const mongoose = require('mongoose');
@@ -59,7 +60,11 @@ app.post('/login', function (req, res) {
                 if (err) throw err;
                 if (isMatch) {
                     req.session.user = user;
-                    res.redirect('/admin/register');
+                    if (req.session.user.isProfileSet === false) {
+                        res.redirect('/setprofile');
+                    } else {
+                        res.redirect('/profile');
+                    }
                 } else {
                     res.render('login', { message: "Invalid Password!" });
                 }
@@ -94,6 +99,10 @@ function checkSignIn(req, res, next) {
 app.get('/admin/register', function (req, res) {
     res.render('admin/register');
 });
+
+//importing user model
+var User = require('./models/user');
+
 //register process
 app.post('/admin/register', function (req, res) {
     const email = req.body.email;
@@ -141,17 +150,77 @@ app.post('/admin/register', function (req, res) {
         });
     });
 });
-//get profile form
-app.get('/getprofile', function (req, res) {
-    res.render('getprofile');
+//set profile form
+app.get('/setprofile', function (req, res) {
+    res.render('setprofile', { user: req.session.user });
 });
-//get profile process
-app.post('/getprofile', function (req, res) {
-    res.render('admin/register');
+
+//set storage engine for images
+const storage = multer.diskStorage({
+    destination: './public/images/uploads/',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
 });
-//temp
+
+const upload = multer({ storage: storage });
+
+//importing profile model
+var Profile = require('./models/profile');
+
+//setting profile process
+app.post('/setprofile', upload.single('profilepic'), function (req, res, next) {
+    console.log(req.file);
+    let newProfile = new Profile({
+        email: req.session.user.email,
+        fullname: req.body.fullname,
+        dob: req.body.dob,
+        mobile: req.body.mobile,
+        gender: req.body.gender,
+        city: req.body.city,
+        hobbies: req.body.hobbies,
+        bio: req.body.bio,
+        profilepic: req.file
+    });
+    console.log(newProfile);
+    newProfile.save(function (err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        else {
+            console.log("Profile saved to database");
+            let user = {};
+            user.isProfileSet = true;
+
+            User.update({ email: req.session.user.email }, user, function (err) {
+                if (err) {
+                    console.log(err);
+                    return;
+                } else {
+                    res.redirect('/profile');
+                }
+            });
+        }
+    });
+});
+
+//getting home i.e profile page
 app.get('/profile', function (req, res) {
-    res.render('profile');
+    let query = { email: req.session.user.email };
+    Profile.findOne(query, function (err, profile) {
+        if (err) throw err;
+        if (!profile) {
+            res.send('Profile not found');
+        }
+        else {
+            User.findOne(query, function (err, user) {
+                if (err) throw err;
+                else { res.render('profile', { user: user, profile: profile }); }
+            });
+        }
+    });
 });
+
 app.listen(8000);
 console.log('8000 is the magic port');

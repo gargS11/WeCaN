@@ -1,0 +1,135 @@
+<html>
+
+<head>
+    <title>Set Profile</title>
+    <!--including head that includes links to linking files-->
+    <% include ./head %>
+
+</head>
+
+<body>
+    <div class="topnav" id="myTopnav">
+        <a href="#home" style="font-size:20px;">
+            <b>
+                <span>W</span><span style="font-family:Book Antiqua;">e</span><span>C</span><span style="font-family:Book Antiqua;">aN</span>
+            </b>
+        </a>
+    </div>
+
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <div class="col-sm-10">
+                <i>
+                    <h1>
+                        <%= user.username %>
+                    </h1>
+                </i>
+            </div>
+        </div>
+        <div class="row">
+
+            <form class="form" action="/setprofile" method="post" id="setprofileForm" enctype="multipart/form-data">
+                <div class="col-sm-3">
+                    <!--left col-->
+                    <div class="text-center">
+                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <h6>Upload a profile photo...</h6>
+                        <input type="file" class="text-center center-block file-upload" name="profilepic" accept="image/png, image/jpeg, image/jpg"
+                            required>
+                    </div>
+                    </hr>
+                    <br>
+                </div>
+                <!--/col-3-->
+
+                <div class="col-sm-9">
+                    <hr>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="full_name">
+                                <h4>Full name</h4>
+                            </label>
+                            <input type="text" class="form-control" name="fullname" id="full_name" placeholder="full name" title="enter your full name"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="dob">
+                                <h4>DOB</h4>
+                            </label>
+                            <input type="date" class="form-control" name="dob" id="dob" title="enter your date of birth" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="mobile">
+                                <h4>Mobile</h4>
+                            </label>
+                            <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile no" title="enter your mobile number"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="gender">
+                                <h4>Gender</h4>
+                            </label>
+                            <input type="text" class="form-control" name="gender" id="gender" placeholder="Male or Female" title="enter your gender"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="city">
+                                <h4>City</h4>
+                            </label>
+                            <input type="text" class="form-control" name="city" id="ciy" placeholder="Mumbai" title="enter your city" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-6">
+                            <label for="hobbies">
+                                <h4>Hobbies</h4>
+                            </label>
+                            <input type="text" class="form-control" name="hobbies" id="hobbies" placeholder="e.g.reading" title="enter your hobbies."
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-xs-12">
+                            <label for="bio">
+                                <h4>Bio</h4>
+                            </label>
+                            <input type="text" class="form-control" name="bio" id="bio" placeholder="enter your short bio" title="enter your bio." required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <br>
+                            <button class="btn btn-lg btn-success" type="submit" style="background-color:rgb(255, 94, 0);">
+                                <i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                            <button class="btn btn-lg" type="reset">
+                                <i class="glyphicon glyphicon-repeat"></i> Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/col-9-->
+            </form>
+            <hr>
+        </div>
+        <!--/row-->
+    </div>
+</body>
+
+</html>

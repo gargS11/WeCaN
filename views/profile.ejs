@@ -38,70 +38,90 @@
     <!--including header-->
     <% include ./header %>
 
-        <div id="mySidenav" class="sidenav">
-            <a href="#" id="about">Home</a>
-            <a href="#" id="blog">Add Users</a>
-            <a href="#" id="projects">Users list</a>
-            <a href="#" id="contact">Communities list</a>
-            <a href="#" id="contact">Change Password</a>
-        </div>
-
+    <!--including sidebar-->
+    <% if (user.role ===  'admin') { %>
+           <% include ./admin/partials/sidebar %>
+       <% } else { %>
+            <% include ./user/partials/sidebar %>
+        <% } %>  
+            
         <div class="container bootstrap snippet">
-            <div class="row">
-                <div class="col-sm-3">
-                    <!--left col-->
-                    <div class="text-center">
-                        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
-                        <h1>User Name</h1>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!--left col-->
+                        <div class="text-center">
+                            <!-- <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
+                       -->
+                            <img src="/images/uploads/ + <%= profile.profilepic.filename %>" class="avatar img-circle img-thumbnail" alt="avatar">
+
+                            <h1>
+                                <%= user.username %>
+                            </h1>
+                        </div>
+                        </hr>
+                        <br>
                     </div>
-                    </hr>
-                    <br>
-                </div>
-                <!--/col-3-->
+                    <!--/col-3-->
 
-                <div class="col-sm-9">
-                    <hr>
-                    <table class="profiletable">
-                        <tr>
-                            <td>Email </td>
-                            <td>Steven@gmail.com </td>
-                        </tr>
-                        <tr>
-                            <td>Name </td>
-                            <td>Joe Root </td>
-                        </tr>
-                        <tr>
-                            <td>D.O.B </td>
-                            <td>11-11-11 </td>
-                        </tr>
-                        <tr>
-                            <td>Mobile </td>
-                            <td>9319009809 </td>
-                        </tr>
-                        <tr>
-                            <td>Gender</td>
-                            <td>Male </td>
-                        </tr>
-                        <tr>
-                            <td>City</td>
-                            <td>I am a student of a btech</td>
-                        </tr>
-                        <tr>
-                            <td>Hobbies</td>
-                            <td>Reading</td>
-                        </tr>
-                        <tr>
-                            <td>Bio</td>
-                            <td>I am a student of a btech</td>
-                        </tr>
+                    <div class="col-sm-9">
+                        <hr>
+                        <table class="profiletable">
+                            <tr>
+                                <td>Email </td>
+                                <td>
+                                    <%= profile.email %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Name </td>
+                                <td>
+                                    <%= profile.fullname %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D.O.B </td>
+                                <td>
+                                    <%= profile.dob %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Mobile </td>
+                                <td>
+                                    <%= profile.mobile %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Gender</td>
+                                <td>
+                                    <%= profile.gender %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td>
+                                    <%= profile.city %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Hobbies</td>
+                                <td>
+                                    <%= profile.hobbies %>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bio</td>
+                                <td>
+                                    <%= profile.bio %>
+                                </td>
+                            </tr>
 
-                    </table>
-                    <hr>
+                        </table>
+                        <hr>
+                    </div>
+                    <!--/col-9-->
                 </div>
-                <!--/col-9-->
+                <!--/row-->
             </div>
-            <!--/row-->
-        </div>
 
 </body>
 
