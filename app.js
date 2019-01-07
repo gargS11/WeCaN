@@ -82,11 +82,6 @@ app.get('/logout', function (req, res) {
 });
 
 function checkSignIn(req, res, next) {
-    /*if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');*/
     if (req.session.user) {
         next();     //If session exists, proceed to page
     } else {
@@ -97,7 +92,7 @@ function checkSignIn(req, res, next) {
 }
 //register form
 app.get('/admin/register', function (req, res) {
-    res.render('admin/register');
+    res.render('admin/register', { user: req.session.user });
 });
 
 //importing user model
@@ -120,35 +115,56 @@ app.post('/admin/register', function (req, res) {
     if (errors) {
         res.render('admin/register', { errors: errors });
     } else {*/
-    let newUser = new User({
-        email: email,
-        password: password,
-        role: role,
-        username: email.substring(0, email.lastIndexOf("@")),
-        isProfileSet: false,
-        isDeleted: false,
-        created_at: new Date()
-    });
-    //hashing password
-    bcrypt.genSalt(10, function (err, salt) { //here 10 represents saltRounds
-        bcrypt.hash(newUser.password, salt, function (err, hash) {
-            if (err) {
-                console.log(err);
-            }
-            newUser.password = hash;
-            console.log(newUser);
-            newUser.save(function (err) {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                else {
-                    console.log("User saved to database");
-                    res.redirect('/admin/register');
-                }
+    let query = { email: email };
+    User.findOne(query, function (err, user) {
+        if (err) throw err;
+        else if (user) {
+            console.log("User saved to database");
+            req.session.user.message = "Already registered";
+            res.redirect('/admin/register');
+        }
+        else {
+            let newUser = new User({
+                email: email,
+                password: password,
+                role: role,
+                username: email.substring(0, email.lastIndexOf("@")),
+                isProfileSet: false,
+                isActivated: true,
+                created_at: new Date()
             });
-        });
+            //hashing password
+            bcrypt.genSalt(10, function (err, salt) { //here 10 represents saltRounds
+                bcrypt.hash(newUser.password, salt, function (err, hash) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    newUser.password = hash;
+                    console.log(newUser);
+                    newUser.save(function (err) {
+                        if (err) {
+                            console.log(err);
+                            return;
+                        }
+                        else {
+                            console.log("User saved to database");
+                            req.session.user.message = "Registered Successfully";
+                            res.redirect('/admin/register');
+                        }
+                    });
+                });
+            });
+        }
     });
+});
+
+//get userlist
+app.get('/admin/userlist', function (req, res) {
+    res.render('admin/userlist', { user: req.session.user });
+});
+//get communitieslist
+app.get('/admin/communitieslist', function (req, res) {
+    res.render('admin/communitieslist', { user: req.session.user });
 });
 //set profile form
 app.get('/setprofile', function (req, res) {
@@ -192,6 +208,7 @@ app.post('/setprofile', upload.single('profilepic'), function (req, res, next) {
             console.log("Profile saved to database");
             let user = {};
             user.isProfileSet = true;
+            user.profileimg = "/images/uploads/" + req.file.filename;
 
             User.update({ email: req.session.user.email }, user, function (err) {
                 if (err) {
@@ -216,10 +233,50 @@ app.get('/profile', function (req, res) {
         else {
             User.findOne(query, function (err, user) {
                 if (err) throw err;
-                else { res.render('profile', { user: user, profile: profile }); }
+                else {
+                    profile.imgsrc = "/images/uploads/" + profile.profilepic.filename;
+                    res.render('profile', { user: user, profile: profile, });
+                }
             });
         }
     });
+});
+
+//get editProfile form
+app.get('/editProfile', function (req, res) {
+    let query = { email: req.session.user.email };
+    Profile.findOne(query, function (err, profile) {
+        if (err) throw err;
+        if (!profile) {
+            res.send('Profile not found');
+        }
+        else {
+            User.findOne(query, function (err, user) {
+                if (err) throw err;
+                else {
+                    profile.imgsrc = "/images/uploads/" + profile.profilepic.filename;
+                    res.render('editProfile', { user: user, profile: profile, });
+                }
+            });
+        }
+    });
+});
+//edit Profile process
+app.post('/editProfile', function (req, res) {
+    res.render('user/createCommunity', { user: req.session.user });
+});
+
+//get my Communities
+app.get('/user/myCommunities', function (req, res) {
+    res.render('user/myCommunities', { user: req.session.user });
+});
+//get create community form
+app.get('/user/createCommunity', function (req, res) {
+    res.render('user/createCommunity', { user: req.session.user });
+});
+//create community
+app.post('/user/createCommunity', function (req, res) {
+    res.render('user/createCommunity', { user: req.session.user });
 });
 
 app.listen(8000);

@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <!--including head that includes links to linking files-->
+    <% include ../head %>
+
+</head>
+
+<body>
+    <!--including header-->
+    <% include ../header %>
+    <!--including sidebar-->
+    <% include ./partials/sidebar %>
+    
+    <div class="container" style="padding:0; margin-top: 40px;">
+        <div class="col-sm-12">
+            <div class="panel panel-default allSidesSoft community-panel-main-div">
+                <div class="panel-heading community-panel-heading" style="background-color: lightgray">
+                    <a class="btn btn-primary community-head-btn btn-md"  href="/user/communitieslist" style="float:left;background-color:rgb(255, 94, 0)">
+                        <i class="fa fa-search"></i>
+                    </a>
+                    <h5 style="color: #555;margin-top:6px;font-weight:bold;margin-left: 500px">My Communities</h5>
+                    
+                    <% if (user.role ===  'community manager') { %>
+                        <a href='/user/createCommunity' class="btn btn-info community-panel-btn" style="float:right;margin:-35px 5px 0 0;background-color:rgb(255, 94, 0)">Create</a>
+                    <% } %>
+                </div>
+                <div class="panel-body" style="padding-bottom:0">
+
+                    <div id="can-create-community">
+                        <!--My Community-->
+                    </div>
+
+                </div>
+
+                <div class="panel-body" style="padding-top:0;padding-bottom:0">
+                    <center>
+                        <img src="/app_pics/bg/loading.gif" alt="loading..." class="loading-community-panel-image">
+                    </center>
+                    <div id="community-that-am-in">
+                        <!--Joined Community-->
+                    </div>
+                </div>
+
+                <div class="panel-body" style="padding-top:0">
+                    <div id="my-pending-commuity">
+                        <!--Pending Community-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

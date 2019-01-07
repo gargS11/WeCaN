@@ -24,7 +24,7 @@
             }
 
             .profiletable td {
-                font-family: Georgia;
+                font-family: Times New Roman, Times, serif;
             }
 
             .profiletable tr:nth-child(even) {
@@ -40,88 +40,88 @@
 
     <!--including sidebar-->
     <% if (user.role ===  'admin') { %>
-           <% include ./admin/partials/sidebar %>
-       <% } else { %>
-            <% include ./user/partials/sidebar %>
-        <% } %>  
-            
-        <div class="container bootstrap snippet">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <!--left col-->
-                        <div class="text-center">
-                            <!-- <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
-                       -->
-                            <img src="/images/uploads/ + <%= profile.profilepic.filename %>" class="avatar img-circle img-thumbnail" alt="avatar">
+       <% include ./admin/partials/sidebar %>
+   <% } else { %>
+        <% include ./user/partials/sidebar %>
+    <% } %>
 
-                            <h1>
-                                <%= user.username %>
-                            </h1>
-                        </div>
-                        </hr>
-                        <br>
-                    </div>
-                    <!--/col-3-->
-
-                    <div class="col-sm-9">
-                        <hr>
-                        <table class="profiletable">
-                            <tr>
-                                <td>Email </td>
-                                <td>
-                                    <%= profile.email %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Name </td>
-                                <td>
-                                    <%= profile.fullname %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>D.O.B </td>
-                                <td>
-                                    <%= profile.dob %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Mobile </td>
-                                <td>
-                                    <%= profile.mobile %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Gender</td>
-                                <td>
-                                    <%= profile.gender %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>City</td>
-                                <td>
-                                    <%= profile.city %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Hobbies</td>
-                                <td>
-                                    <%= profile.hobbies %>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bio</td>
-                                <td>
-                                    <%= profile.bio %>
-                                </td>
-                            </tr>
-
-                        </table>
-                        <hr>
-                    </div>
-                    <!--/col-9-->
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <div class="col-sm-3">
+                <!--left col-->
+                <div class="text-center">
+                    <img src="<%= user.profileimg %>" class="avatar img-circle img-thumbnail" alt="avatar">
+                    <h1>
+                        <%= user.username %>
+                    </h1>
                 </div>
-                <!--/row-->
+                </hr>
+                <br>
             </div>
+            <!--/col-3-->
+
+            <div class="col-sm-9">
+                <div class="form-group">
+                    <a href="/editProfile" class="btn btn-primary pull-right">Edit Profile</a>
+                </div>
+                <hr>
+                <table class="profiletable">
+                    <tr>
+                        <td>Email </td>
+                        <td>
+                            <%= profile.email %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name </td>
+                        <td>
+                            <%= profile.fullname %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>D.O.B </td>
+                        <td>
+                            <%= profile.dob %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mobile </td>
+                        <td>
+                            <%= profile.mobile %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td>
+                            <%= profile.gender %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>
+                            <%= profile.city %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hobbies</td>
+                        <td>
+                            <%= profile.hobbies %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Bio</td>
+                        <td>
+                            <%= profile.bio %>
+                        </td>
+                    </tr>
+
+                </table>
+                <hr>
+            </div>
+            <!--/col-9-->
+        </div>
+        <!--/row-->
+    </div>
 
 </body>
 

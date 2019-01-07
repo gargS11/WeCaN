@@ -8,7 +8,7 @@
         <span class="glyphicon glyphicon-log-out"></span> Logout</a>
     <a class="navbar-right" style="color:white" class="navbar-brand"><%= user.username %></a>
     <a class="navbar-right" href="" title="My Account">
-        <img src="images/profile.jpg" style="height:23px;width:23px;border-radius:50%;margin-right:10px" alt="Avatar">
+        <img src="<%= user.profileimg %>" style="height:23px;width:23px;border-radius:50%;margin-right:10px" alt="Welcome">
     </a>
     <a class="navbar-right" style="color:white" class="navbar-brand"><%= user.role %></a>
     <a href="javascript:void(0);" class="icon" onclick="myFunction()">

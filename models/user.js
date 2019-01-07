@@ -3,26 +3,17 @@ const mongoose = require('mongoose');
 const UserSchema = mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: {type: String, required: true},
-  username: {type: String, required: true},
+  role: { type: String, required: true }, //admin, user or community manager
+  username: { type: String, required: true },
+  profileimg: { type: String },
   isProfileSet: Boolean,
-  isDeleted: Boolean,
+  isActivated: Boolean,
   created_at: Date
 });
 
 // the schema is useless so far
 // we need to create a model using it
 const User = mongoose.model('User', UserSchema);
-
-// *To ask how to make this pre works* 
-/*UserSchema.pre('save', function(next) {
-  // get the current date
-  var currentDate = new Date();
-  this.created_at = currentDate;
-
-  next();
-});*/
-// make this available to our users in our Node applications
 module.exports = User;
 
 /*

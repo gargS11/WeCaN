@@ -2,28 +2,27 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-  <style>
-  </style>
+  <!--including head that includes links to linking files-->
+  <% include ../head %>
 </head>
 
 <body>
+
   <!--including header-->
   <% include ../header %>
 
-    <!--including sidebar-->
-    <% include ./partials/sidebar %>
+  <!--including sidebar-->
+  <% include ./partials/sidebar %>
 
-      <center>
-        <div class="container" style="height:75%;width:55%;background-color: ghostwhite;margin-top:5% ">
-          <h1>Add User</h1>
+  <center>
+    <div class="container" style="height:75%;width:55%;background-color: ghostwhite;margin-top:5% ">
+      <h1>Add User</h1>
+      <% if (user.message != undefined && user.message.length > 0) { %>
+        <div class="alert alert-error" id="message" style="background-color: lightgray">
+          <%= user.message %>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        <% } user.message=undefined%>
           <form action="/admin/register" method="post" class="form-horizontal" id="form" style="max-width:500px;margin:auto">
             <div class="col-sm-12">
               <div class="form-group">
@@ -41,7 +40,7 @@
                 <select data-style="btn-info" name="role" class="form-control">
                   <optgroup label="Select User Role">
                     <option value="user">User</option>
-                    <option value="community manager">Commuity Manager</option>
+                    <option value="community manager">Community Manager</option>
                     <option value="admin">Admin</option>
                   </optgroup>
                 </select>
@@ -52,8 +51,8 @@
               </div>
             </div>
           </form>
-        </div>
-      </center>
+    </div>
+  </center>
 
 </body>
 

@@ -2,10 +2,14 @@
 <html>
 
 <head>
+
+  <title>Login</title>
+  <!--Dont add head here-->
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/main.css">
-  <!-- Add icon library -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -72,14 +76,15 @@
   </div>
   <center>
     <div class="container" style="height:80%;width:55%;background-color: ghostwhite;margin-top:5% ">
-      <% if (message.length > 0) { %>
-        <div class="alert alert-error">
-          <%= message %>
-        </div>
-        <% } %>
-          <form action="/login" method="post" style="max-width:500px;margin:auto">
-            <h2>Login to Your Account</h2>
 
+      <form action="/login" method="post" style="max-width:500px;margin:auto">
+        <h2>Login to Your Account</h2>
+        <% if (message.length > 0) { %>
+          <div class="alert alert-error">
+            <%= message %>
+          </div>
+        <% } %>
+            <br>
             <div class="input-container">
               <i class="fa fa-envelope icon"></i>
               <input class="input-field" type="email" placeholder="Email" name="email" required>
@@ -91,7 +96,7 @@
             </div>
 
             <button type="submit" class="btn">Login</button>
-          </form>
+      </form>
     </div>
   </center>
 </body>
