@@ -160,7 +160,12 @@ app.post('/admin/register', function (req, res) {
 
 //get userlist
 app.get('/admin/userlist', function (req, res) {
-    res.render('admin/userlist', { user: req.session.user });
+    User.find({}, function (err, userlist) {
+        if (err) throw err;
+        else {
+            res.render('admin/userlist', { user: req.session.user, userlist:userlist });
+        }
+    });
 });
 //get communitieslist
 app.get('/admin/communitieslist', function (req, res) {
