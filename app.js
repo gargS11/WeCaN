@@ -172,7 +172,12 @@ app.get('/admin/userlist', checkSignIn, function (req, res) {
 
 //get communitieslist
 app.get('/admin/communitieslist', checkSignIn, function (req, res) {
-    res.render('admin/communitieslist', { user: req.session.user });
+    Community.find({}, function (err, communitieslist) {
+        if (err) throw err;
+        else {
+            res.render('admin/communitieslist',{ user: req.session.user, communitieslist: communitieslist });
+        }
+    });
 });
 
 //set profile form
