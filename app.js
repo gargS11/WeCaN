@@ -1,4 +1,3 @@
-//see for req.flash()
 
 const express = require('express');
 //Init app
@@ -91,15 +90,21 @@ function checkSignIn(req, res, next) {
     }
 }
 //register form
-app.get('/admin/register', function (req, res) {
+app.get('/admin/register', checkSignIn, function (req, res) {
     res.render('admin/register', { user: req.session.user });
 });
 
 //importing user model
 var User = require('./models/user');
 
+//importing profile model
+var Profile = require('./models/profile');
+
+//importing communities model
+var Community = require('./models/communities');
+
 //register process
-app.post('/admin/register', function (req, res) {
+app.post('/admin/register', checkSignIn, function (req, res) {
     const email = req.body.email;
     const password = req.body.password;
     const role = req.body.role;
@@ -129,9 +134,6 @@ app.post('/admin/register', function (req, res) {
                 password: password,
                 role: role,
                 username: email.substring(0, email.lastIndexOf("@")),
-                isProfileSet: false,
-                isActivated: true,
-                created_at: new Date()
             });
             //hashing password
             bcrypt.genSalt(10, function (err, salt) { //here 10 represents saltRounds
@@ -159,38 +161,37 @@ app.post('/admin/register', function (req, res) {
 });
 
 //get userlist
-app.get('/admin/userlist', function (req, res) {
+app.get('/admin/userlist', checkSignIn, function (req, res) {
     User.find({}, function (err, userlist) {
         if (err) throw err;
         else {
-            res.render('admin/userlist', { user: req.session.user, userlist:userlist });
+            res.render('admin/userlist', { user: req.session.user, userlist: userlist });
         }
     });
 });
+
 //get communitieslist
-app.get('/admin/communitieslist', function (req, res) {
+app.get('/admin/communitieslist', checkSignIn, function (req, res) {
     res.render('admin/communitieslist', { user: req.session.user });
 });
+
 //set profile form
-app.get('/setprofile', function (req, res) {
+app.get('/setprofile', checkSignIn, function (req, res) {
     res.render('setprofile', { user: req.session.user });
 });
 
-//set storage engine for images
-const storage = multer.diskStorage({
+//set storage engine for profile images
+const profileStorage = multer.diskStorage({
     destination: './public/images/uploads/',
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
 
-const upload = multer({ storage: storage });
-
-//importing profile model
-var Profile = require('./models/profile');
+const profileUpload = multer({ storage: profileStorage });
 
 //setting profile process
-app.post('/setprofile', upload.single('profilepic'), function (req, res, next) {
+app.post('/setprofile', checkSignIn, profileUpload.single('profilepic'), function (req, res, next) {
     console.log(req.file);
     let newProfile = new Profile({
         email: req.session.user.email,
@@ -228,7 +229,7 @@ app.post('/setprofile', upload.single('profilepic'), function (req, res, next) {
 });
 
 //getting home i.e profile page
-app.get('/profile', function (req, res) {
+app.get('/profile', checkSignIn, function (req, res) {
     let query = { email: req.session.user.email };
     Profile.findOne(query, function (err, profile) {
         if (err) throw err;
@@ -248,7 +249,7 @@ app.get('/profile', function (req, res) {
 });
 
 //get editProfile form
-app.get('/editProfile', function (req, res) {
+app.get('/editProfile', checkSignIn, function (req, res) {
     let query = { email: req.session.user.email };
     Profile.findOne(query, function (err, profile) {
         if (err) throw err;
@@ -272,16 +273,62 @@ app.post('/editProfile', function (req, res) {
 });
 
 //get my Communities
-app.get('/user/myCommunities', function (req, res) {
-    res.render('user/myCommunities', { user: req.session.user });
+app.get('/user/myCommunities', checkSignIn, function (req, res) {
+    //here we need particular user communities not all communities
+    Community.find({}, function (err, myCommunities) {
+        if (err) throw err;
+        else {
+            res.render('user/myCommunities', { user: req.session.user, myCommunities: myCommunities });
+        }
+    });
 });
+
 //get create community form
-app.get('/user/createCommunity', function (req, res) {
+app.get('/user/createCommunity', checkSignIn, function (req, res) {
     res.render('user/createCommunity', { user: req.session.user });
 });
-//create community
-app.post('/user/createCommunity', function (req, res) {
-    res.render('user/createCommunity', { user: req.session.user });
+
+//set storage engine for profile images
+const communityStorage = multer.diskStorage({
+    destination: './public/images/communities/',
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const communityUpload = multer({ storage: communityStorage });
+
+//create community process
+app.post('/user/createCommunity', checkSignIn, communityUpload.single('community_pic'), function (req, res) {
+    let newCommunity = new Community({
+        community_name: req.body.community_name,
+        description: req.body.description,
+        type: req.body.type,
+        community_pic: '/images/uploads/' + req.file.filename,
+        creator: req.session.user.email,
+        members: { email: req.session.user.email, status: '3' }
+    });
+    console.log(newCommunity);
+    newCommunity.save(function (err) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        else {
+            console.log("Community saved to database");
+            User.updateOne({ email: req.session.user.email },
+                { $push: { communities: { id: newCommunity._id, status: '3' } } },
+                function (err) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    } else {
+                        req.session.user.message = "Community Created Successfully";
+                        res.redirect('/user/createCommunity');
+                    }
+                });
+        }
+    });
 });
 
 app.listen(8000);

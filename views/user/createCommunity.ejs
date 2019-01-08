@@ -17,38 +17,47 @@
   <center>
     <div class="container" style="height:75%;width:55%;background-color: ghostwhite;margin-top:5% ">
       <h1>Create Community</h1>
-        <form action="/user/createCommunity" method="post" class="form-horizontal" id="form" style="max-width:500px;margin:auto">
-          <div class="col-sm-12">
-              <div class="form-group">
-                <input type="text" required="" name="comm_name" class="form-control" placeholder="enter community name" autocomplete="off">
-                <br/>
-              </div>
-
-              <div class="form-group">
-                <textarea rows="4" cols="50" name="description" class="form-control" required>enter Community Description here...</textarea>
-              </div>
-              <div class="form-group">
-                <label>
-                  <h4> Community Type: &nbsp</h4>
-                </label>
-                <input class="radio radio-inline"  type="radio" checked value="direct" name="direct"> Direct 
-                <input class="radio radio-inline" type="radio" value="permission"  name="permission"> Permission
-                <br>
-              </div>
-              
-              <div class="form-group">
-                <label>
-                  <h4> Upload Community Image...</h4>
-                </label>
-                <input type="file" class="btn" class="text-center center-block file-upload" name="profilepic" accept="image/png, image/jpeg, image/jpg"required>
-              </div>
-
-              <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-success" style="background-color:rgb(255, 94, 0)">
-                <a value="Add User" class="btn btn-danger" href="/user/createCommunity" style="background-color:rgb(255, 94, 0)">Cancel</a>
-              </div>
+      <% if (user.message != undefined && user.message.length > 0) { %>
+        <div class="alert alert-error" id="message" style="background-color: lightgray">
+          <%= user.message %>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+      <% } user.message=undefined%>
+      
+      <form action="/user/createCommunity" method="post" class="form-horizontal" id="form" style="max-width:500px;margin:auto"
+        enctype="multipart/form-data">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <input type="text" required="" name="community_name" class="form-control" placeholder="enter community name" autocomplete="off">
+            <br/>
           </div>
-        </form>
+
+          <div class="form-group">
+            <textarea rows="4" cols="50" name="description" class="form-control" required>enter Community Description here...</textarea>
+          </div>
+          <div class="form-group">
+            <label>
+              <h4> Community Type: &nbsp</h4>
+            </label>
+            <input class="radio radio-inline" type="radio" checked value="direct" name="type"> Direct
+            <input class="radio radio-inline" type="radio" value="permission" name="type"> Permission
+            <br>
+          </div>
+
+          <div class="form-group">
+            <label>
+              <h4> Upload Community Image...</h4>
+            </label>
+            <input type="file" class="btn" class="text-center center-block file-upload" name="community_pic" accept="image/png, image/jpeg, image/jpg"
+              required>
+          </div>
+
+          <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-success" style="background-color:rgb(255, 94, 0)">
+            <a value="Add User" class="btn btn-danger" href="/user/createCommunity" style="background-color:rgb(255, 94, 0)">Cancel</a>
+          </div>
+        </div>
+      </form>
     </div>
   </center>
 
