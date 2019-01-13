@@ -1,0 +1,260 @@
+<html>
+
+<head>
+    <!--including head that includes links to linking files-->
+    <% include ../head %>
+
+    <link rel="stylesheet" href="/css/community.css">
+    <style>
+        .communityprofile-name-pc {
+            height: 45px; 
+            margin-top: 15px;
+            font-size: 30px;
+            font-family: 'Open Sans', sans-serif;
+            text-transform: capitalize;
+            font-weight: bold;
+        }
+
+        .communityprofile-name-pc:hover {
+            color: #767777;
+            text-decoration: none;
+        }
+
+        .img-communityprofile-pic {
+            background: rgb(255, 255, 255) !important;
+            height: 100px;
+            width: 100px;
+            z-index: 2;
+            position: absolute;
+            margin-top: -20px;
+            border: 4px solid #fff;
+        }
+        .commuity-profile-menu-btn{
+            margin-bottom:5px;
+            float:right;
+            border: 2px solid #D1CFCF;
+        }
+        .custom-commuity-dropdown{
+            border:2px solid rgba(119, 159, 255, 0.56);
+            margin-top:-50px !important
+        }
+        .requestBtn{
+            margin-left: 44px;
+        }    
+        .joinBtn{
+            margin-bottom: 8px;
+        }
+        </style>
+</head>
+
+<body>
+
+    <!--including header-->
+    <% include ../header %>
+
+    <!--including sidebar-->
+    <% include ./partials/sidebar %>
+    
+    <div class="container" style="padding:0;margin-left: 10%;margin-top: 10px;">
+        <!--Margin Top is new-->
+        <div class="container-fluid page-content-div" style="padding:0">
+            <div class="row">
+                <div class="col-lg-12 scoll-possible" style="padding:0">
+
+                    <div class="" style="padding-top:6px;position:relative;background-color:rgb(245, 238, 238)">
+                        <div class="container pc">
+                            <% if(community.userstatus === -1){
+                                    if(community.type === 'direct'){ %>
+                                        <button class="btn btn-primary joinBtn" data-id=0 style="float:right">
+                                        Join <i class="fa fa-ask"></i></button>
+                                    <% } else { %>
+                                            <button class="btn btn-primary joinBtn" data-id=0 style="float:right">
+                                            Ask To Join <i class="fa fa-ask"></i></button>
+                                    <% } %>
+                            <%}else if(community.userstatus === 0){ %>
+                                <button class="btn btn-primary joinBtn" data-id=0 style="float:right">
+                                Leave Community<i class="fa fa-ask"></i></button>
+                            <%}else if(community.userstatus === 1){ %>
+                                <button class="btn btn-primary joinBtn" data-id=0 style="float:right">
+                                Accept Invite <i class="fa fa-ask"></i></button>
+                            <%}else if(community.userstatus === 2){ %>
+                                <button class="btn btn-primary joinBtn disabled" data-id=0 style="float:right">
+                                Requested<i class="fa fa-ask"></i></button>
+                            <%}else{ %>
+                                <button class="btn btn-primary joinBtn" data-id=0 style="float:right">
+                                Delete Community<i class="fa fa-ask"></i></button>
+                            <%} %>
+
+                        </div>
+                    </div>
+
+                    <div class="container community-profile-conatiner">
+                        <div class="col-sm-2 col-xs-12 center-mobile pc">
+                            <img src="<%= community.community_pic %>" alt="commpic" class="img-communityprofile-pic allSides"
+                                style="background:#fff" />
+                        </div>
+
+                        <div class="col-sm-8 communityprofile-name-pc">
+                            <a href="/user/community/<%= community._id %>" class="communityprofile-name-pc">
+                                <%= community.community_name %>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2 col-xs-12 center-mobile" style="padding-top:10px;float:right">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle commuity-profile-menu-btn" type="button"
+                                data-toggle="dropdown">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <ul class="dropdown-menu custom-commuity-dropdown dropdown-menu-right" style="margin-top:40px">
+                                <li>
+                                    <a href="#" class="community-profile-option-btn">
+                                        Discussions
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="community-profile-option-btn">
+                                        Community Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="community-profile-option-btn">
+                                        Community Members
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <center>
+                        <hr style="border-top:2px solid #E6E6E6;width:85%;">
+                    </center>
+
+                    <div class="container" style="width:94% !important">
+                        <div class="col-sm-3 col-xs-12">
+                            <div class="panel panel-default allSidesSoft" style="border-radius:0">
+                                <% if(community.userstatus === 0 || community.userstatus === 3){ %>
+
+                                <div class="panel-heading" style="border:0;border-radius:0">
+                                    Members
+
+                                    <a href="#" style="float:right">View</a>
+                                </div>
+
+
+                                <div class="panel-body" style="border:0;border-radius:0">
+
+                                    <div class="col-sm-12 col-xs-12" style="padding:0" id="membersDiv-4joinedUser">
+                                        <center><b style="font-size: 24px"><%= community.members.length %></b></center>
+                                    </div>
+
+                                </div>
+
+                                <div class="panel-footer community-panel-sideBtn-link">
+                                    <% if(community.userstatus === 0) { %>
+                                        <a onclick="leaveCommunity('5bb756b8431b7366243a365a')" style="margin-left:40px;cursor:pointer">
+                                            Leave Community
+                                        </a>
+                                    <%} else{ %>
+                                        <a onclick="leaveCommunity('5bb756b8431b7366243a365a')" style="margin-left:40px;cursor:pointer">
+                                            Delete Community
+                                        </a>    
+                                    <% } %>
+                                </div>
+
+                                <% } else {%>
+                                <div class="panel-body" style="border:0;border-radius:0">
+
+                                    <div class="col-sm-12 col-xs-12 center-all">
+                                        <% if(community.userstatus === -1){
+                                                        if(community.type === 'direct'){ %>
+                                        <button class="btn btn-primary requestBtn" data-id=0>Join
+                                            <i class="fa fa-ask"></i></button>
+                                        <% } else { %>
+                                        <button class="btn btn-primary requestBtn" data-id=0>Ask To Join <i
+                                                class="fa fa-ask"></i></button>
+                                        <% } %>
+
+                                        <%}else if(community.userstatus === 1){ %>
+                                        <button class="btn btn-primary requestBtn" data-id=0>Accept Invite <i
+                                                class="fa fa-ask"></i></button>
+                                        <%}else if(community.userstatus === 2){ %>
+                                        <button class="btn btn-primary requestBtn disabled" data-id=0>Requested<i class="fa fa-ask"></i></button>
+                                        <%} %>
+                                    </div>
+
+                                </div>
+                                <div class="panel-footer community-panel-sideBtn-link">
+
+                                    <p class="center-all" style="margin:0;margin-left: 70px">
+                                        <%= community.members.length %> Member
+                                    </p>
+
+                                </div>
+                                <%}%>
+                            </div>
+
+                            <div class="panel panel-default allSidesSoft" style="border-radius:0">
+                                <div class="panel-heading" style="border:0;border-radius:0">
+                                    <a href="#" style="margin-left:40px;cursor:pointer">
+                                        Community Owner
+                                    </a>
+                                </div>
+                                <div class="panel-body" style="border:0;border-radius:0">
+                                    <div id="commuity-owner-detail">
+                                            
+                                        <center><b style="font-size: 18px;color:red"><%= community.creator %></b></center>
+                                    </div>
+                                    
+                                    <div id="commuity-admins-detail">
+                                        <!--Admin Info-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <style>
+                            .full-description {
+                                display: none;
+                            }
+
+                            .less-description-btn {
+                                display: none;
+                            }
+                        </style>
+                        <div class="col-sm-8 col-xs-12 separator-community-admin" style="padding:0 10px 10px 10px;">
+
+                            <div class="panel panel-default allSidesSoft" style="border-radius:0">
+                                <div class="panel-heading center-all" style="border:0;border-radius:0">
+                                    About Community
+                                </div>
+                                <div class="panel-body" style="border:0;border-radius:0;overflow:scroll">
+
+
+                                    <p class="short-description center-all">
+                                        <%= community.description%>
+                                    </p>
+                                    <div class="full-description">
+                                    <!--to be filled later-->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-12" id="needGlobalInProfile" style="padding:0">
+                                <!--Here global will come-->
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

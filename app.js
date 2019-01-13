@@ -83,10 +83,8 @@ app.get('/logout', function (req, res) {
 function checkSignIn(req, res, next) {
     if (req.session.user) {
         next();     //If session exists, proceed to page
-    } else {
-        var err = new Error("Not logged in!");
-        console.log(req.session.user);
-        next(err);  //Error, trying to access unauthorized page!
+    } else {    //else render login page to login again
+        res.redirect('/login');
     }
 }
 //register form
@@ -175,7 +173,7 @@ app.get('/admin/communitieslist', checkSignIn, function (req, res) {
     Community.find({}, function (err, communitieslist) {
         if (err) throw err;
         else {
-            res.render('admin/communitieslist',{ user: req.session.user, communitieslist: communitieslist });
+            res.render('admin/communitieslist', { user: req.session.user, communitieslist: communitieslist });
         }
     });
 });
@@ -214,8 +212,7 @@ app.post('/setprofile', checkSignIn, profileUpload.single('profilepic'), functio
         if (err) {
             console.log(err);
             return;
-        }
-        else {
+        } else {
             console.log("Profile saved to database");
             let user = {};
             user.isProfileSet = true;
@@ -260,8 +257,7 @@ app.get('/editProfile', checkSignIn, function (req, res) {
         if (err) throw err;
         if (!profile) {
             res.send('Profile not found');
-        }
-        else {
+        } else {
             User.findOne(query, function (err, user) {
                 if (err) throw err;
                 else {
@@ -275,17 +271,6 @@ app.get('/editProfile', checkSignIn, function (req, res) {
 //edit Profile process
 app.post('/editProfile', function (req, res) {
     res.render('user/createCommunity', { user: req.session.user });
-});
-
-//get my Communities
-app.get('/user/myCommunities', checkSignIn, function (req, res) {
-    //here we need particular user communities not all communities
-    Community.find({}, function (err, myCommunities) {
-        if (err) throw err;
-        else {
-            res.render('user/myCommunities', { user: req.session.user, myCommunities: myCommunities });
-        }
-    });
 });
 
 //get create community form
@@ -309,7 +294,7 @@ app.post('/user/createCommunity', checkSignIn, communityUpload.single('community
         community_name: req.body.community_name,
         description: req.body.description,
         type: req.body.type,
-        community_pic: '/images/uploads/' + req.file.filename,
+        community_pic: '/images/communities/' + req.file.filename,
         creator: req.session.user.email,
         members: { email: req.session.user.email, status: '3' }
     });
@@ -333,6 +318,74 @@ app.post('/user/createCommunity', checkSignIn, communityUpload.single('community
                     }
                 });
         }
+    });
+});
+
+//get my Communities
+app.get('/user/myCommunities', checkSignIn, async function (req, res) {
+    var myCommunities = [];
+    var comms = req.session.user.communities;
+    for (const communities of comms) {
+        await Community.findOne({ _id: communities.id }, function (err, comm) {
+            if (err) {
+                console.log(err);
+                return;
+            } else {
+                comm.userstatus = communities.status;
+                console.log('comm = ' + comm);
+                myCommunities.push(comm);
+            }
+        });
+    }
+    req.session.communities = {};
+
+    myCommunities.map(function (com) {
+        req.session.communities[com._id] = com;
+    });
+
+    res.render('user/myCommunities', { user: req.session.user, myCommunities: myCommunities });
+});
+
+//getlist of commun of which user is neither a member nor has req to join nor has got invite to join
+app.get('/user/communitiesSearch', checkSignIn, function (req, res) {
+    Community.find({}, function (err, comm) {
+        if (err) {
+            console.log(err);
+            return;
+        } else {
+            communitieslist = comm.filter(function (item) {
+                return req.session.communities[item._id] ? false : true;
+            });
+            res.render('user/communitiesSearch', { user: req.session.user, communitieslist: communitieslist });
+        }
+    });
+});
+
+//searching a user in an array of objects using value(email)
+function findUserByEmail(array, value, callback) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].email === value) {
+            callback(null, array[i]);
+            return;
+        }
+    }
+    callback(null, undefined);
+}
+//Get single community profile
+app.get('/user/communityProfile/:_id', checkSignIn, function (req, res) {
+
+    Community.findById(req.params._id, function (err, community) {
+        findUserByEmail(community.members, req.session.user.email, function (err, user) {
+            if (err) {
+                console.log(err);
+                return;
+            } else if (!user) {
+                community.userstatus = -1; //this means that user is not a member of community
+            } else {
+                community.userstatus = user.status;
+            }
+            res.render('user/communityProfile', { user: req.session.user, community: community });
+        });
     });
 });
 

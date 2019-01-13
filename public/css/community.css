@@ -1,0 +1,44 @@
+.community-panel-main-div {
+    border: 0;
+    border-radius: 0;
+    margin-top: 50px;
+}
+
+.loading-community-panel-image {
+    height: auto;
+    width: auto;
+}
+
+/* used in communitiesSearch and myCommunities*/
+.community-name{
+    font-size: 20px;
+    margin-left: 40px;
+    text-decoration: none;
+    color:red;
+}
+.community-name:hover{
+    text-decoration: none;
+}
+/* used in communitiesSearch and myCommunities*/
+.community-memcount{
+    color:brown;
+    font-size: 14px;
+    margin-left: 25px;
+}
+.community-desc{
+    font-size:16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.middle-btn{
+    margin-left: 50px;
+}
+.cancel-btn{
+    float:right;
+}
+/*used in communitiesSearch*/
+.list-group-item {
+    margin-top: 20px;
+}
+.join-btn{
+    float:right;
+}

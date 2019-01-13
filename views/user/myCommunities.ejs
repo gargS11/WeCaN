@@ -4,50 +4,61 @@
     <!--including head that includes links to linking files-->
     <% include ../head %>
 
+    <link rel="stylesheet" href="/css/community.css">
+
 </head>
 
-<body>
+<body style="background-color: lavenderblush">
     <!--including header-->
     <% include ../header %>
+      
     <!--including sidebar-->
     <% include ./partials/sidebar %>
-    
-    <div class="container" style="padding:0; margin-top: 40px;">
+
+
+    <div class="container">
         <div class="col-sm-12">
             <div class="panel panel-default allSidesSoft community-panel-main-div">
-                <div class="panel-heading community-panel-heading" style="background-color: lightgray">
-                    <a class="btn btn-primary community-head-btn btn-md"  href="/user/communitieslist" style="float:left;background-color:rgb(255, 94, 0)">
+                <div class="panel-heading" style="background-color: #555">
+                    <a class="btn btn-primary btn-md" href="/user/communitiesSearch" style="float:left;background-color:rgb(255, 94, 0)">
                         <i class="fa fa-search"></i>
                     </a>
-                    <h5 style="color: #555;margin-top:6px;font-weight:bold;margin-left: 500px">My Communities</h5>
-                    
+                    <h5 style="color: white;margin-top:6px;font-weight:bold;margin-left: 490px">My Communities</h5>
+
                     <% if (user.role ===  'community manager') { %>
                         <a href='/user/createCommunity' class="btn btn-info community-panel-btn" style="float:right;margin:-35px 5px 0 0;background-color:rgb(255, 94, 0)">Create</a>
-                    <% } %>
+                        <% } %>
                 </div>
-                <div class="panel-body" style="padding-bottom:0">
-
-                    <div id="can-create-community">
-                        <!--My Community-->
-                    </div>
-
-                </div>
-
-                <div class="panel-body" style="padding-top:0;padding-bottom:0">
-                    <center>
-                        <img src="/app_pics/bg/loading.gif" alt="loading..." class="loading-community-panel-image">
-                    </center>
-                    <div id="community-that-am-in">
-                        <!--Joined Community-->
-                    </div>
-                </div>
-
-                <div class="panel-body" style="padding-top:0">
-                    <div id="my-pending-commuity">
-                        <!--Pending Community-->
-                    </div>
-                </div>
-
+                <% if(myCommunities.length > 0) { %>
+                    <% myCommunities.forEach(function(community) { %>
+                        <hr>
+                        <div class="panel-body" style="padding-top:0;padding-bottom:0">
+                            <img src="<%= community.community_pic %>" alt="loading..." class="loading-community-panel-image"style="height:35px;width:35px;border-radius:50%;">
+                            <a href="/user/communityProfile/<%=community._id%>" class="community-name"><b><%= community.community_name %></b></a>
+                            <span class="community-memcount">Members(<%= community.members.length %>)</span>
+                            
+                            <% if(community.userstatus === 0) { %> 
+                                    <!--User is member-->
+                            <% } else if(community.userstatus === 1) { %>
+                                    <!--Invite from Community-->
+                            <% } else if(community.userstatus === 2) { %>
+                                    <!--Requested to join Community-->
+                                    <button class="btn btn-danger btn-xs middle-btn">Pending</button>
+                                    <a href="#" class="btn btn-xs cancel-btn">Cancel</a>
+                            <% } else if(community.userstatus === 3) { %>
+                                    <!--Owner of Community-->
+                            <% } %>               
+                        </div>
+                        <hr>
+                   <% }); %>   
+                <% } else{ %>
+                    <hr>
+                        <div class="panel-body" style="padding-top:0;padding-bottom:0">
+                            <center>No Communities Joined</center>
+                        </div>
+                    <hr>    
+                <% } %>
+            
             </div>
         </div>
     </div>
